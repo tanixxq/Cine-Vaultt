@@ -2,20 +2,21 @@
     display: flex;
     justify-content: center;
     gap: 15px;
-    margin: 50px 0;
+    margin: 70px 0;
   }
   
   .search-section input {
-    width: 500px;
-    padding: 16px;
-    border-radius: 8px;
+    width: 550px;
+    padding: 18px;
+    border-radius: 14px;
     border: none;
+    font-size: 16px;
   }
   
   .search-section button {
-    padding: 16px 25px;
-    border: none;
-    background-color: #e50914;
+    background: #e50914;
     color: white;
-    border-radius: 8px;
+    border: none;
+    padding: 18px 30px;
+    border-radius: 14px;
   }
