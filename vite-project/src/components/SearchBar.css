@@ -1,22 +1,59 @@
 .search-section {
-    display: flex;
+    display: flex;               /* 🔥 THIS WAS MISSING */
     justify-content: center;
-    gap: 15px;
-    margin: 70px 0;
+    align-items: center;
+    gap: 12px;
+    margin: 50px 0;
+    padding: 0 20px;
+    flex-wrap: wrap;            /* safety for small screens */
   }
   
+  /* 🎯 Input field */
   .search-section input {
-    width: 550px;
-    padding: 18px;
-    border-radius: 14px;
-    border: none;
-    font-size: 16px;
+    width: 100%;
+    max-width: 550px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    font-size: 15px;
+    outline: none;
+    background: #1a1a1a;
+    color: white;
+    transition: 0.2s ease;
   }
   
+  /* ✨ focus effect */
+  .search-section input:focus {
+    border-color: #e50914;
+    box-shadow: 0 0 8px rgba(229, 9, 20, 0.4);
+  }
+  
+  /* 🔘 Button */
   .search-section button {
     background: #e50914;
     color: white;
     border: none;
-    padding: 18px 30px;
-    border-radius: 14px;
+    padding: 14px 22px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.2s ease;
+  }
+  
+  .search-section button:hover {
+    background: #b20710;
+    transform: translateY(-2px);
+  }
+  
+  /* 📱 Mobile responsiveness */
+  @media (max-width: 600px) {
+    .search-section {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .search-section input,
+    .search-section button {
+      width: 100%;
+    }
   }

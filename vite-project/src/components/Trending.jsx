@@ -1,23 +1,31 @@
 import React, { useEffect, useState } from "react";
 import "./Trending.css";
 
-const Trending = () => {
+const Trending = ({ search }) => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchMovies() {
+    const fetchMovies = async () => {
       try {
-        console.log("fetch started");
+        setLoading(true);
 
-        const response = await fetch(
-          `https://api.themoviedb.org/3/trending/movie/week?api_key=${
+        let url = "";
+
+        if (search && search.trim() !== "") {
+          // 🔍 SEARCH API (your requirement)
+          url = `https://api.themoviedb.org/3/search/movie?api_key=${
             import.meta.env.VITE_TMDB_API_KEY
-          }`
-        );
+          }&query=${search}`;
+        } else {
+          // 🔥 TRENDING API
+          url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${
+            import.meta.env.VITE_TMDB_API_KEY
+          }`;
+        }
 
-        const data = await response.json();
-        console.log("movie data:", data);
+        const res = await fetch(url);
+        const data = await res.json();
 
         setMovies(data?.results || []);
       } catch (error) {
@@ -25,17 +33,17 @@ const Trending = () => {
       } finally {
         setLoading(false);
       }
-    }
+    };
 
     fetchMovies();
-  }, []);
+  }, [search]); // 🔥 runs whenever user types
 
   return (
     <section className="trending">
-      <h2>Trending Now 🔥</h2>
+      <h2>{search ? "Search Results 🔍" : "Trending Now 🔥"}</h2>
 
       {loading ? (
-        <p>Loading movies...</p>
+        <p>Loading...</p>
       ) : (
         <div className="movie-container">
           {movies.map((movie) => (
@@ -46,7 +54,7 @@ const Trending = () => {
                     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
                     : "https://via.placeholder.com/300"
                 }
-                alt={movie.title}
+                alt={movie.title || movie.name}
               />
 
               <h3>{movie.title || movie.name}</h3>

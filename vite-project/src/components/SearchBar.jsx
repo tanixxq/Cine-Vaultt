@@ -1,15 +1,17 @@
-import React from 'react'
-import './SearchBar.css'
-const SearchBar = () => {
+import React from "react";
+import "./SearchBar.css";
+
+const SearchBar = ({ search, setSearch }) => {
   return (
     <section className="search-section">
       <input
         type="text"
-        placeholder="Search movies, actors, directors..."
+        placeholder="Search movies..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
       />
-      <button>Search</button>
     </section>
-  )
-}
+  );
+};
 
-export default SearchBar
+export default SearchBar;
