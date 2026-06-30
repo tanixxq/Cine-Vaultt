@@ -1,0 +1,14 @@
+.mypicks {
+    padding: 40px 60px;
+  }
+  
+  .pick-card {
+    margin-top: 20px;
+    background-color: #1a1a1a;
+    padding: 25px;
+    border-radius: 12px;
+  }
+  
+  .pick-card h3 {
+    margin-bottom: 12px;
+  }

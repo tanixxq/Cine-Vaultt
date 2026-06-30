@@ -1,0 +1,21 @@
+.search-section {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 50px 0;
+  }
+  
+  .search-section input {
+    width: 500px;
+    padding: 16px;
+    border-radius: 8px;
+    border: none;
+  }
+  
+  .search-section button {
+    padding: 16px 25px;
+    border: none;
+    background-color: #e50914;
+    color: white;
+    border-radius: 8px;
+  }

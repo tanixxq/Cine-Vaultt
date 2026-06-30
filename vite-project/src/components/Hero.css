@@ -1,0 +1,48 @@
+.hero {
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 60px;
+    gap: 20px;
+  }
+  
+  .hero h2 {
+    font-size: 55px;
+    width: 600px;
+  }
+  
+  .hero p {
+    font-size: 20px;
+    color: gray;
+  }
+  
+  .hero button {
+    width: 180px;
+    padding: 14px;
+    border: none;
+    margin-right: 20px;
+    border-radius: 8px;
+  }
+  
+  .hero button:first-of-type {
+    background-color: #e50914;
+    color: white;
+  }
+
+  .hero {
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 70px;
+    gap: 20px;
+    background-image: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.95),
+        rgba(0, 0, 0, 0.4)
+      ),
+      url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba");
+    background-size: cover;
+    background-position: center;
+  }

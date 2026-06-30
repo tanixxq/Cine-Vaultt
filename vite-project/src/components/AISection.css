@@ -1,0 +1,22 @@
+.ai-section {
+    padding: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .ai-section input {
+    width: 500px;
+    padding: 15px;
+    border-radius: 8px;
+    border: none;
+  }
+  
+  .ai-section button {
+    width: 120px;
+    padding: 12px;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 8px;
+  }

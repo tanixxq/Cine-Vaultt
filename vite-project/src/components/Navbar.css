@@ -1,0 +1,21 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 60px;
+    background-color: black;
+  }
+  
+  .navbar h1 {
+    color: #e50914;
+    font-size: 32px;
+  }
+  
+  .navbar ul {
+    display: flex;
+    gap: 30px;
+  }
+  
+  .navbar li {
+    font-size: 18px;
+  }

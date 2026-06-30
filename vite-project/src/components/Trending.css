@@ -1,0 +1,22 @@
+.trending {
+    padding: 40px 60px;
+  }
+  
+  .trending h2 {
+    margin-bottom: 30px;
+  }
+  
+  .movie-container {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .movie-card {
+    height: 250px;
+    width: 180px;
+    background-color: #1e1e1e;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
