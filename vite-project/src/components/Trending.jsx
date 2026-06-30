@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./Trending.css";
+import { useNavigate } from "react-router-dom";
 
 const Trending = ({ search }) => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMovies = async () => {
@@ -47,7 +50,8 @@ const Trending = ({ search }) => {
       ) : (
         <div className="movie-container">
           {movies.map((movie) => (
-            <div key={movie.id} className="movie-card">
+            <div key={movie.id} className="movie-card"
+            onClick={() => navigate(`/movie/${movie.id}`)}>
               <img
                 src={
                   movie.poster_path

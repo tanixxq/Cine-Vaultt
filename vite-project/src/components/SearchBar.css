@@ -1,17 +1,17 @@
 .search-section {
-    display: flex;               /* 🔥 THIS WAS MISSING */
+    display: flex;
     justify-content: center;
     align-items: center;
     gap: 12px;
-    margin: 50px 0;
+    margin: 60px 0;
     padding: 0 20px;
-    flex-wrap: wrap;            /* safety for small screens */
+    flex-wrap: wrap;
   }
   
-  /* 🎯 Input field */
+  /* Input */
   .search-section input {
     width: 100%;
-    max-width: 550px;
+    max-width: 500px;
     padding: 14px 16px;
     border-radius: 12px;
     border: 1px solid #333;
@@ -22,18 +22,17 @@
     transition: 0.2s ease;
   }
   
-  /* ✨ focus effect */
   .search-section input:focus {
     border-color: #e50914;
-    box-shadow: 0 0 8px rgba(229, 9, 20, 0.4);
+    box-shadow: 0 0 10px rgba(229, 9, 20, 0.4);
   }
   
-  /* 🔘 Button */
+  /* Button */
   .search-section button {
     background: #e50914;
     color: white;
     border: none;
-    padding: 14px 22px;
+    padding: 14px 20px;
     border-radius: 12px;
     cursor: pointer;
     font-weight: 500;
@@ -43,17 +42,4 @@
   .search-section button:hover {
     background: #b20710;
     transform: translateY(-2px);
-  }
-  
-  /* 📱 Mobile responsiveness */
-  @media (max-width: 600px) {
-    .search-section {
-      flex-direction: column;
-      gap: 10px;
-    }
-  
-    .search-section input,
-    .search-section button {
-      width: 100%;
-    }
   }

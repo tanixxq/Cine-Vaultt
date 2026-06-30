@@ -1,0 +1,114 @@
+.movie-hero {
+  position: relative;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: center;
+  color: white;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+}
+
+.details-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 60px 20px;
+  z-index: 2;
+}
+
+.details-card {
+  display: flex;
+  gap: 30px;
+  max-width: 1000px;
+  background: rgba(20,20,20,0.7);
+  backdrop-filter: blur(12px);
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+}
+
+.details-card img {
+  width: 280px;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.details-card img:hover {
+  transform: scale(1.05);
+}
+
+.details-info h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.overview {
+  margin-top: 10px;
+  line-height: 1.5;
+  opacity: 0.9;
+}
+
+.meta p {
+  margin: 5px 0;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.genres {
+  margin-top: 10px;
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.rating-bar {
+  width: 120px;
+  height: 6px;
+  background: #333;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.rating-fill {
+  height: 100%;
+  background: gold;
+}
+
+.trailer-btn {
+  margin-top: 15px;
+  padding: 10px 15px;
+  background: red;
+  border: none;
+  color: white;
+  cursor: pointer;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.trailer-btn:hover {
+  background: darkred;
+}
+
+/* Trailer Modal */
+.trailer-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.trailer-content {
+  width: 80%;
+  max-width: 800px;
+}
