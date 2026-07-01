@@ -7,46 +7,42 @@ import MyPicks from "../components/MyPicks";
 
 const HomeScreen = () => {
   const [search, setSearch] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [selectedGenre, setSelectedGenre] = useState(null);
   const [movies, setMovies] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
+  // Debounced search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(search);
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  // Reset page when search / genre changes
+  useEffect(() => {
+    setPage(1);
+  }, [debouncedSearch, selectedGenre]);
+
+  // Fetch movies
   useEffect(() => {
     async function fetchMovies() {
+      setLoading(true);
+  
       try {
-        let url = "";
-
-        // Search API
-        if (search.trim() !== "") {
-          url = `https://api.themoviedb.org/3/search/movie?api_key=${
-            import.meta.env.VITE_TMDB_API_KEY
-          }&query=${search}`;
-        }
-
-        // Genre API
-        else if (selectedGenre) {
-          url = `https://api.themoviedb.org/3/discover/movie?api_key=${
-            import.meta.env.VITE_TMDB_API_KEY
-          }&with_genres=${selectedGenre}`;
-        }
-
-        // Default trending movies
-        else {
-          url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${
-            import.meta.env.VITE_TMDB_API_KEY
-          }`;
-        }
-
-        const res = await fetch(url);
-        const data = await res.json();
-
-        setMovies(data.results || []);
+        // fetch logic
       } catch (error) {
-        console.log("Error fetching movies:", error);
+        console.log(error);
+      } finally {
+        setLoading(false);
       }
     }
-
+  
     fetchMovies();
-  }, [search, selectedGenre]);
+  }, [debouncedSearch, selectedGenre, page]);
 
   return (
     <div>
@@ -64,7 +60,25 @@ const HomeScreen = () => {
         <button onClick={() => setSelectedGenre(878)}>Sci-Fi</button>
       </div>
 
-      <Trending movies={movies} search={search} />
+      <Trending movies={movies} search={debouncedSearch} />
+
+      <button
+        onClick={() => setPage((prev) => prev + 1)}
+        style={{
+          display: "block",
+          margin: "30px auto",
+          padding: "15px 30px",
+          backgroundColor: "#e50914",
+          color: "white",
+          fontSize: "18px",
+          border: "none",
+          borderRadius: "10px",
+          cursor: "pointer",
+          fontWeight: "bold",
+        }}
+      >
+        See More
+      </button>
 
       <MyPicks />
     </div>

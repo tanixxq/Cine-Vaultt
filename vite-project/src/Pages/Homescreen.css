@@ -1,0 +1,17 @@
+.load-more-btn {
+    display: block;
+    margin: 30px auto;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 10px;
+    background: #e50914;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  .load-more-btn:hover {
+    transform: scale(1.05);
+  }
