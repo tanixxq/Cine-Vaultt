@@ -8,6 +8,29 @@ const MovieDetails = () => {
   const [trailer, setTrailer] = useState(null);
   const [showTrailer, setShowTrailer] = useState(false);
 
+  const addToWatchlist = () => {
+    const existing = JSON.parse(localStorage.getItem("watchlist")) || [];
+  
+    const alreadyExists = existing.find((m) => m.id === movie.id);
+  
+    if (!alreadyExists) {
+      const updated = [
+        ...existing,
+        {
+          id: movie.id,
+          title: movie.title,
+          poster_path: movie.poster_path,
+        },
+      ];
+  
+      localStorage.setItem("watchlist", JSON.stringify(updated));
+      alert("Added to Watchlist ❤️");
+    } else {
+      alert("Already in Watchlist ⚡");
+    }
+  };
+
+
   useEffect(() => {
     async function fetchMovie() {
       const res = await fetch(
@@ -83,10 +106,14 @@ const MovieDetails = () => {
               <b>Genres:</b>{" "}
               {movie.genres?.map((g) => g.name).join(", ")}
             </p>
-
+            <div className="button-group">
             <button className="trailer-btn" onClick={fetchTrailer}>
               ▶ Watch Trailer
             </button>
+            <button className="watchlist-btn" onClick={addToWatchlist}>
+  ❤️ Add to Watchlist
+</button>
+</div>
           </div>
         </div>
       </div>

@@ -1,37 +1,47 @@
 .navbar {
-    top: 0;
-    z-index: 100;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 25px 60px;
-    background: rgba(0,0,0,0.65);
-    backdrop-filter: blur(16px);
-  }
-  
-  .navbar h1 {
-    color: #e50914;
-    font-size: 34px;
-    text-shadow: 0 0 15px rgba(229, 9, 20, 0.6);
-  }
-  
-  .navbar ul {
-    display: flex;
-    gap: 30px;
-  }
-  
-  .navbar li {
-    cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  .navbar li:hover {
-    color: #e50914;
-  }
-  .navbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 9999;
+  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 50px;
+  
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
+  }
+  
+  .navbar h1 {
+    color: #e50914;
+    font-size: 28px;
+  }
+  
+  .navbar ul {
+    display: flex;
+    gap: 25px;
+    list-style: none;
+    align-items: center;
+  }
+  
+  .navbar li a {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    transition: 0.3s;
+  }
+  
+  .navbar li a:hover {
+    color: #e50914;
+  }
+  
+  /* Watchlist button */
+  .watchlist-btn-nav {
+    background: #e50914;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: white !important;
   }

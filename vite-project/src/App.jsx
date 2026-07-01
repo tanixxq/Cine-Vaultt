@@ -1,7 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import HomeScreen from "./pages/HomeScreen";
+import HomeScreen from "./Pages/HomeScreen";
 import MovieDetails from "./Pages/MovieDetails";
+import WatchList from "./Pages/WatchList";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/movie/:id" element={<MovieDetails />} />
+        <Route path="/watchlist" element={<WatchList />} />
       </Routes>
     </>
   );
