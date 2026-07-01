@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import HomeScreen from "./Pages/HomeScreen";
+import HomeScreen from "./Pages/Homescreen";
 import MovieDetails from "./Pages/MovieDetails";
 import WatchList from "./Pages/WatchList";
 
