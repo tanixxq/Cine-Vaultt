@@ -81,6 +81,7 @@ const MovieDetails = () => {
           />
 
           <div className="details-info">
+            
             <h1>{movie.title}</h1>
 
             <div className="rating">
