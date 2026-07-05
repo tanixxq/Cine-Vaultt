@@ -5,9 +5,12 @@ import { useNavigate } from "react-router-dom";
 const Trending = ({ movies, search, loading }) => {
   const navigate = useNavigate();
 
+  // Optional: remove movies with completely invalid poster values
+  const validMovies = movies.filter((movie) => movie);
+
   return (
     <section className="trending">
-      <h2>{search ? "Search Results 🔍" : "Trending Now 🔥"}</h2>
+      <h2>{search ? "Search Results 🔍" : "Featured Movies ⭐"}</h2>
 
       {loading ? (
         <div className="movie-container">
@@ -15,27 +18,31 @@ const Trending = ({ movies, search, loading }) => {
             <div key={index} className="skeleton-card"></div>
           ))}
         </div>
-      ) : movies.length === 0 ? (
+      ) : validMovies.length === 0 ? (
         <p className="no-results">No movies found 😕</p>
       ) : (
         <div className="movie-container">
-          {movies.map((movie) => (
+          {validMovies.map((movie) => (
             <div
-              key={movie.id}
+              key={movie.imdbID}
               className="movie-card"
-              onClick={() => navigate(`/movie/${movie.id}`)}
+              onClick={() => navigate(`/movie/${movie.imdbID}`)}
             >
               <img
                 src={
-                  movie.poster_path
-                    ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                    : "https://via.placeholder.com/300"
+                  movie.Poster && movie.Poster !== "N/A"
+                    ? movie.Poster
+                    : "https://via.placeholder.com/300x450?text=No+Poster"
                 }
-                alt={movie.title}
+                alt={movie.Title}
+                onError={(e) => {
+                  e.target.src =
+                    "https://via.placeholder.com/300x450?text=No+Poster";
+                }}
               />
 
-              <h3>{movie.title}</h3>
-              <p>⭐ {movie.vote_average}</p>
+              <h3>{movie.Title}</h3>
+              <p>📅 {movie.Year}</p>
             </div>
           ))}
         </div>

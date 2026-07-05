@@ -3,17 +3,16 @@ import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import SearchBar from "../components/SearchBar";
 import Trending from "../components/Trending";
-import MyPicks from "../components/MyPicks";
+import MyRecommendations from "../components/MyRecommendations";
 
 const HomeScreen = () => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [selectedGenre, setSelectedGenre] = useState(null);
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
 
-  // Debounced search
+  // Debounce search
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
@@ -22,27 +21,50 @@ const HomeScreen = () => {
     return () => clearTimeout(timer);
   }, [search]);
 
-  // Reset page when search / genre changes
+  // Reset page whenever a new search starts
   useEffect(() => {
     setPage(1);
-  }, [debouncedSearch, selectedGenre]);
+  }, [debouncedSearch]);
 
-  // Fetch movies
+  // Fetch only when searching
   useEffect(() => {
+    if (!debouncedSearch.trim()) {
+      setMovies([]);
+      return;
+    }
+
     async function fetchMovies() {
       setLoading(true);
-  
+
       try {
-        // fetch logic
+        const url = `https://www.omdbapi.com/?apikey=${
+          import.meta.env.VITE_OMDB_API_KEY
+        }&s=${debouncedSearch}&page=${page}`;
+
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (data.Response === "False") {
+          if (page === 1) {
+            setMovies([]);
+          }
+          return;
+        }
+
+        if (page === 1) {
+          setMovies(data.Search || []);
+        } else {
+          setMovies((prev) => [...prev, ...(data.Search || [])]);
+        }
       } catch (error) {
-        console.log(error);
+        console.log("FETCH ERROR:", error);
       } finally {
         setLoading(false);
       }
     }
-  
+
     fetchMovies();
-  }, [debouncedSearch, selectedGenre, page]);
+  }, [debouncedSearch, page]);
 
   return (
     <div>
@@ -51,36 +73,49 @@ const HomeScreen = () => {
 
       <SearchBar search={search} setSearch={setSearch} />
 
-      <div className="genre-bar">
-        <button onClick={() => setSelectedGenre(null)}>All</button>
-        <button onClick={() => setSelectedGenre(28)}>Action</button>
-        <button onClick={() => setSelectedGenre(27)}>Horror</button>
-        <button onClick={() => setSelectedGenre(53)}>Thriller</button>
-        <button onClick={() => setSelectedGenre(35)}>Comedy</button>
-        <button onClick={() => setSelectedGenre(878)}>Sci-Fi</button>
-      </div>
+      {debouncedSearch ? (
+        <>
+          {loading ? (
+            <h2
+              style={{
+                textAlign: "center",
+                color: "white",
+                marginTop: "30px",
+              }}
+            >
+              Loading movies...
+            </h2>
+          ) : (
+            <Trending
+              movies={movies}
+              search={debouncedSearch}
+              loading={loading}
+            />
+          )}
 
-      <Trending movies={movies} search={debouncedSearch} />
-
-      <button
-        onClick={() => setPage((prev) => prev + 1)}
-        style={{
-          display: "block",
-          margin: "30px auto",
-          padding: "15px 30px",
-          backgroundColor: "#e50914",
-          color: "white",
-          fontSize: "18px",
-          border: "none",
-          borderRadius: "10px",
-          cursor: "pointer",
-          fontWeight: "bold",
-        }}
-      >
-        See More
-      </button>
-
-      <MyPicks />
+          {!loading && movies.length > 0 && (
+            <button
+              onClick={() => setPage((prev) => prev + 1)}
+              style={{
+                display: "block",
+                margin: "30px auto",
+                padding: "15px 30px",
+                backgroundColor: "#e50914",
+                color: "white",
+                fontSize: "18px",
+                border: "none",
+                borderRadius: "10px",
+                cursor: "pointer",
+                fontWeight: "bold",
+              }}
+            >
+              See More
+            </button>
+          )}
+        </>
+      ) : (
+        <MyRecommendations />
+      )}
     </div>
   );
 };
