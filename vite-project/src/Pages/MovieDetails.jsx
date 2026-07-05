@@ -5,24 +5,48 @@ import "./MoviePages.css";
 const MovieDetails = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState(null);
-  const [trailer, setTrailer] = useState(null);
-  const [showTrailer, setShowTrailer] = useState(false);
+
+  useEffect(() => {
+    async function fetchMovie() {
+      try {
+        const res = await fetch(
+          `https://www.omdbapi.com/?apikey=${
+            import.meta.env.VITE_OMDB_API_KEY
+          }&i=${id}&plot=full`
+        );
+
+        const data = await res.json();
+
+        if (data.Response === "False") {
+          console.log(data.Error);
+          return;
+        }
+
+        setMovie(data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchMovie();
+  }, [id]);
 
   const addToWatchlist = () => {
     const existing = JSON.parse(localStorage.getItem("watchlist")) || [];
-  
-    const alreadyExists = existing.find((m) => m.id === movie.id);
-  
+
+    const alreadyExists = existing.find((m) => m.id === movie.imdbID);
+
     if (!alreadyExists) {
       const updated = [
         ...existing,
         {
-          id: movie.id,
-          title: movie.title,
-          poster_path: movie.poster_path,
+          id: movie.imdbID,
+          title: movie.Title,
+          poster: movie.Poster,
+          year: movie.Year,
         },
       ];
-  
+
       localStorage.setItem("watchlist", JSON.stringify(updated));
       alert("Added to Watchlist ❤️");
     } else {
@@ -30,109 +54,61 @@ const MovieDetails = () => {
     }
   };
 
-
-  useEffect(() => {
-    async function fetchMovie() {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/movie/${id}?api_key=${
-          import.meta.env.VITE_TMDB_API_KEY
-        }`
-      );
-      const data = await res.json();
-      setMovie(data);
-    }
-
-    fetchMovie();
-  }, [id]);
-
-  // Fetch trailer
-  const fetchTrailer = async () => {
-    const res = await fetch(
-      `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${
-        import.meta.env.VITE_TMDB_API_KEY
-      }`
-    );
-    const data = await res.json();
-
-    const trailerVideo = data.results.find(
-      (vid) => vid.type === "Trailer" && vid.site === "YouTube"
-    );
-
-    setTrailer(trailerVideo);
-    setShowTrailer(true);
-  };
-
-  if (!movie) return <p style={{ color: "white" }}>Loading...</p>;
+  if (!movie) return <h2 style={{ color: "white", textAlign: "center" }}>Loading...</h2>;
 
   return (
     <div
       className="movie-hero"
       style={{
-        backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
+        background:
+          "linear-gradient(135deg,#0f172a,#111827,#1f2937)",
       }}
     >
-      <div className="overlay"></div>
-
       <div className="details-container">
         <div className="details-card">
-          <img
-            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            alt={movie.title}
-          />
+          <img src={movie.Poster} alt={movie.Title} />
 
           <div className="details-info">
-            
-            <h1>{movie.title}</h1>
+            <h1>{movie.Title}</h1>
 
             <div className="rating">
-              <span>⭐ {movie.vote_average}</span>
-              <div className="rating-bar">
-                <div
-                  className="rating-fill"
-                  style={{ width: `${movie.vote_average * 10}%` }}
-                />
-              </div>
+              <span>⭐ IMDb {movie.imdbRating}</span>
             </div>
 
-            <p className="overview">{movie.overview}</p>
+            <p>
+              🍅 Rotten Tomatoes:{" "}
+              {movie.Ratings?.find(
+                (r) => r.Source === "Rotten Tomatoes"
+              )?.Value || "N/A"}
+            </p>
+
+            <p className="overview">{movie.Plot}</p>
 
             <div className="meta">
-              <p><b>Release:</b> {movie.release_date}</p>
-              <p><b>Runtime:</b> {movie.runtime} min</p>
-              <p><b>Status:</b> {movie.status}</p>
-              <p><b>Language:</b> {movie.original_language}</p>
+              <p><b>Released:</b> {movie.Released}</p>
+              <p><b>Runtime:</b> {movie.Runtime}</p>
+              <p><b>Genre:</b> {movie.Genre}</p>
+              <p><b>Language:</b> {movie.Language}</p>
+              <p><b>Country:</b> {movie.Country}</p>
+              <p><b>Director:</b> {movie.Director}</p>
+              <p><b>Writer:</b> {movie.Writer}</p>
+              <p><b>Actors:</b> {movie.Actors}</p>
+              <p><b>Awards:</b> {movie.Awards}</p>
+              <p><b>Box Office:</b> {movie.BoxOffice}</p>
+              <p><b>Production:</b> {movie.Production || "N/A"}</p>
             </div>
 
-            <p className="genres">
-              <b>Genres:</b>{" "}
-              {movie.genres?.map((g) => g.name).join(", ")}
-            </p>
             <div className="button-group">
-            <button className="trailer-btn" onClick={fetchTrailer}>
-              ▶ Watch Trailer
-            </button>
-            <button className="watchlist-btn" onClick={addToWatchlist}>
-  ❤️ Add to Watchlist
-</button>
-</div>
+              <button
+                className="watchlist-btn"
+                onClick={addToWatchlist}
+              >
+                ❤️ Add to Watchlist
+              </button>
+            </div>
           </div>
         </div>
       </div>
-
-      {/* Trailer Modal */}
-      {showTrailer && trailer && (
-        <div className="trailer-modal" onClick={() => setShowTrailer(false)}>
-          <div className="trailer-content" onClick={(e) => e.stopPropagation()}>
-            <iframe
-              width="100%"
-              height="400"
-              src={`https://www.youtube.com/embed/${trailer.key}`}
-              title="Trailer"
-              allowFullScreen
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 };
