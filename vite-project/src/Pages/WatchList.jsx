@@ -10,11 +10,7 @@ const WatchList = () => {
 
   useEffect(() => {
     const saved = JSON.parse(localStorage.getItem("watchlist")) || [];
-
-    // shuffle ONLY once when loading
-    const shuffled = shuffleArray(saved);
-
-    setMovies(shuffled);
+    setMovies(shuffleArray(saved));
   }, []);
 
   const removeFromWatchlist = (id) => {
@@ -25,28 +21,51 @@ const WatchList = () => {
 
   return (
     <div className="watchlist-page">
-      <h1>❤️ My Watchlist</h1>
+      <div className="watchlist-header">
+        <div>
+          <h1 className="watchlist-heading">❤️ My Watchlist</h1>
+          <p>{movies.length} Movie{movies.length !== 1 ? "s" : ""} Saved</p>
+        </div>
+      </div>
 
       {movies.length === 0 ? (
-        <p>No movies added yet 😢</p>
+        <div className="empty-state">
+          <h2>Your Watchlist is Empty 🎬</h2>
+          <p>Save your favourite movies and they'll appear here.</p>
+        </div>
       ) : (
         <div className="watchlist-grid">
           {movies.map((movie) => (
-            <div key={movie.id} className="movie-card">
-              <img
-                src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
-                alt={movie.title}
-              />
+            <div className="movie-card" key={movie.id}>
+              <div className="poster-container">
+                <img
+                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  alt={movie.title}
+                />
+
+                <div className="rating-badge">
+                  ⭐ {movie.vote_average?.toFixed(1)}
+                </div>
+
+                <div className="movie-overlay">
+                  <button
+                    className="remove-btn"
+                    onClick={() => removeFromWatchlist(movie.id)}
+                  >
+                    Remove ❤️
+                  </button>
+                </div>
+              </div>
 
               <div className="movie-info">
                 <h3>{movie.title}</h3>
 
-                <button
-                  className="remove-btn"
-                  onClick={() => removeFromWatchlist(movie.id)}
-                >
-                  Remove ❌
-                </button>
+                <span>
+                  📅{" "}
+                  {movie.release_date
+                    ? movie.release_date.substring(0, 4)
+                    : "N/A"}
+                </span>
               </div>
             </div>
           ))}
