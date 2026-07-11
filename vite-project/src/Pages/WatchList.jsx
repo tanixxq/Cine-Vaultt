@@ -24,7 +24,9 @@ const WatchList = () => {
       <div className="watchlist-header">
         <div>
           <h1 className="watchlist-heading">❤️ My Watchlist</h1>
-          <p>{movies.length} Movie{movies.length !== 1 ? "s" : ""} Saved</p>
+          <p>
+            {movies.length} Movie{movies.length !== 1 ? "s" : ""} Saved
+          </p>
         </div>
       </div>
 
@@ -39,13 +41,13 @@ const WatchList = () => {
             <div className="movie-card" key={movie.id}>
               <div className="poster-container">
                 <img
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  src={movie.poster}
                   alt={movie.title}
+                  onError={(e) => {
+                    e.target.src =
+                      "https://via.placeholder.com/500x750?text=No+Poster";
+                  }}
                 />
-
-                <div className="rating-badge">
-                  ⭐ {movie.vote_average?.toFixed(1)}
-                </div>
 
                 <div className="movie-overlay">
                   <button
@@ -59,13 +61,7 @@ const WatchList = () => {
 
               <div className="movie-info">
                 <h3>{movie.title}</h3>
-
-                <span>
-                  📅{" "}
-                  {movie.release_date
-                    ? movie.release_date.substring(0, 4)
-                    : "N/A"}
-                </span>
+                <span>📅 {movie.year || "N/A"}</span>
               </div>
             </div>
           ))}
