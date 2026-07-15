@@ -15,6 +15,7 @@ app.get("/", (req, res) => {
   res.send("Welcome to Cine-Vaultt API");
 });
 
+
 const startServer = async () => {
   try {
     await connectDB();
