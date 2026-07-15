@@ -9,14 +9,30 @@ const WatchList = () => {
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("watchlist")) || [];
-    setMovies(shuffleArray(saved));
+    const fetchFavourites = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/api/favourites");
+        const data = await response.json();
+
+        setMovies(shuffleArray(data));
+      } catch (error) {
+        console.error("Error fetching favourites:", error);
+      }
+    };
+
+    fetchFavourites();
   }, []);
 
-  const removeFromWatchlist = (id) => {
-    const updated = movies.filter((movie) => movie.id !== id);
-    setMovies(updated);
-    localStorage.setItem("watchlist", JSON.stringify(updated));
+  const removeFromWatchlist = async (id) => {
+    try {
+      await fetch(`http://localhost:3000/api/favourites/remove/${id}`, {
+        method: "DELETE",
+      });
+
+      setMovies(movies.filter((movie) => movie._id !== id));
+    } catch (error) {
+      console.error("Error removing favourite:", error);
+    }
   };
 
   return (
@@ -38,7 +54,7 @@ const WatchList = () => {
       ) : (
         <div className="watchlist-grid">
           {movies.map((movie) => (
-            <div className="movie-card" key={movie.id}>
+            <div className="movie-card" key={movie._id}>
               <div className="poster-container">
                 <img
                   src={movie.poster}
@@ -52,7 +68,7 @@ const WatchList = () => {
                 <div className="movie-overlay">
                   <button
                     className="remove-btn"
-                    onClick={() => removeFromWatchlist(movie.id)}
+                    onClick={() => removeFromWatchlist(movie._id)}
                   >
                     Remove ❤️
                   </button>
