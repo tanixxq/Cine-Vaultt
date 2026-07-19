@@ -23,6 +23,7 @@ const MovieDetails = () => {
         }
 
         setMovie(data);
+        addRecentlyViewed(data);
       } catch (error) {
         console.log(error);
       }
@@ -31,8 +32,36 @@ const MovieDetails = () => {
     fetchMovie();
   }, [id]);
 
+  const addRecentlyViewed = async (movieData) => {
+    try {
+      const response = await fetch(
+        "http://localhost:3000/api/recently-viewed",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            omdbID: movieData.imdbID,
+            title: movieData.Title,
+            poster: movieData.Poster,
+            year: movieData.Year,
+            genre: movieData.Genre,
+            rating: movieData.imdbRating,
+            userID: "user123",
+          }),
+        }
+      );
+  
+      const data = await response.json();
+      console.log(data);
+  
+    } catch (error) {
+      console.log("Error adding recently viewed:", error);
+    }
+  };
 
-  // ADD MOVIE TO MONGODB WATCHLIST
+
   const addToWatchlist = async () => {
     try {
       const response = await fetch(

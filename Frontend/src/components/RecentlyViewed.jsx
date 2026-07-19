@@ -33,7 +33,7 @@ const RecentlyViewed = ({ movies, loading }) => {
             >
               <img
                 src={
-                  movie.poster || movie.Poster
+                  movie.Poster || movie.Poster
                     ? movie.poster || movie.Poster
                     : "https://via.placeholder.com/300x450?text=No+Poster"
                 }

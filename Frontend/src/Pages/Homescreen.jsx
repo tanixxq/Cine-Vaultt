@@ -12,6 +12,7 @@ const HomeScreen = () => {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [recentMovies,setRecentMovies] = useState([]);
 
   // Temporary dummy data
   const recentlyViewedMovies = !debouncedSearch
@@ -30,6 +31,31 @@ const HomeScreen = () => {
   useEffect(() => {
     setPage(1);
   }, [debouncedSearch]);
+
+  useEffect(()=>{
+
+    const fetchRecentlyViewed = async()=>{
+    
+    try{
+    
+    const response = await fetch(
+    "http://localhost:3000/api/recently-viewed/user123"
+    );
+    
+    const data = await response.json();
+    
+    setRecentMovies(data);
+    
+    }
+    catch(error){
+    console.log(error);
+    }
+    
+    }
+    
+    fetchRecentlyViewed();
+    
+    },[]);
 
   useEffect(() => {
     async function fetchMovies() {
@@ -98,7 +124,7 @@ const HomeScreen = () => {
       {/* Show Recently Viewed only on Home */}
       {!debouncedSearch && (
         <RecentlyViewed
-          movies={recentlyViewedMovies}
+          movies={recentMovies}
           loading={false}
         />
       )}
