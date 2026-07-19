@@ -1,27 +1,48 @@
-.trending {
+.recently-viewed-section {
     padding: 20px 40px;
     color: white;
   }
   
-  .trending h2 {
-    font-size: 22px;
+  .recently-viewed-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
   }
   
-  /* GRID layout (this fixes symmetry issue) */
-  .movie-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
+  .recently-viewed-header h2 {
+    font-size: 22px;
   }
   
-  /* Movie card */
+  /* Horizontal Scroll */
+  .recently-viewed-container {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 10px;
+    scroll-behavior: smooth;
+  }
+  
+  /* Hide Scrollbar */
+  .recently-viewed-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .recently-viewed-container {
+    scrollbar-width: none;
+  }
+  
+  /* Movie Card */
   .movie-card {
+    min-width: 180px;
+    max-width: 180px;
     background: #1a1a1a;
     border-radius: 12px;
     overflow: hidden;
-    transition: 0.3s ease;
     cursor: pointer;
+    transition: 0.3s ease;
+    flex-shrink: 0;
   }
   
   .movie-card:hover {
@@ -29,7 +50,6 @@
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
   }
   
-  /* Poster image */
   .movie-card img {
     width: 100%;
     height: 260px;
@@ -37,7 +57,6 @@
     display: block;
   }
   
-  /* Text */
   .movie-card h3 {
     font-size: 14px;
     margin: 10px;
@@ -51,10 +70,13 @@
     margin: 0 10px 10px;
     color: #aaa;
   }
-  /* Loading Skeleton */
-.skeleton-card {
+  
+  /* Skeleton Loading */
+  .skeleton-card {
+    min-width: 180px;
     height: 340px;
     border-radius: 12px;
+    flex-shrink: 0;
     background: linear-gradient(
       90deg,
       #1a1a1a 25%,
@@ -65,39 +87,20 @@
     animation: shimmer 1.5s infinite;
   }
   
-  /* No Results */
+  /* Empty State */
   .no-results {
     text-align: center;
-    font-size: 20px;
     color: #aaa;
-    margin: 40px 0;
+    font-size: 18px;
+    margin: 30px 0;
   }
   
   @keyframes shimmer {
     0% {
       background-position: 200% 0;
     }
+  
     100% {
       background-position: -200% 0;
     }
-  }
-  .trending-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 25px;
-  }
-  
-  .sort-dropdown {
-    padding: 10px 15px;
-    border-radius: 8px;
-    border: none;
-    background: #1f1f1f;
-    color: white;
-    cursor: pointer;
-    font-size: 15px;
-  }
-  
-  .sort-dropdown:focus {
-    outline: none;
   }

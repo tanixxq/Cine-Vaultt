@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import "./Trending.css";
+import "./Featured.css";
 import { useNavigate } from "react-router-dom";
 
-const Trending = ({ movies, search, loading }) => {
+const Featured = ({ movies, search, loading }) => {
   const navigate = useNavigate();
   const [sortBy, setSortBy] = useState("default");
 
@@ -19,15 +19,15 @@ const Trending = ({ movies, search, loading }) => {
   }
 
   return (
-    <section className="trending">
-      <div className="trending-header">
+    <section className="featured-section">
+      <div className="featured-header">
         <h2>{search ? "Search Results 🔍" : "Featured Movies ⭐"}</h2>
 
         {sortedMovies.length > 0 && (
           <select
+            className="sort-dropdown"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="sort-dropdown"
           >
             <option value="default">Relevance</option>
             <option value="az">A-Z</option>
@@ -77,4 +77,4 @@ const Trending = ({ movies, search, loading }) => {
   );
 };
 
-export default Trending;
+export default Featured;

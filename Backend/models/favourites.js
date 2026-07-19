@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 
 const favouriteSchema = new mongoose.Schema({
-  userId:String,
+  userID:String,
     omdbID: String,
     title: String,
     poster: String,
@@ -12,7 +12,7 @@ const favouriteSchema = new mongoose.Schema({
 })
 
 
-favouriteSchema.index({ userId: 1, omdbID: 1 }, { unique: true });
+favouriteSchema.index({ userID: 1, omdbID: 1 }, { unique: true });
 
 const Favourite = mongoose.model("Favourite", favouriteSchema);
 

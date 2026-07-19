@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Hero from "../components/Hero";
 import SearchBar from "../components/SearchBar";
-import Trending from "../components/Trending";
+import Featured from "../components/Featured";
+import RecentlyViewed from "../components/RecentlyViewed";
 import recommendations from "../data/recommendations";
 
 const HomeScreen = () => {
@@ -11,6 +12,11 @@ const HomeScreen = () => {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+
+  // Temporary dummy data
+  const recentlyViewedMovies = !debouncedSearch
+  ? movies.slice(0, 5)
+  : [];
 
   // Debounce Search
   useEffect(() => {
@@ -30,7 +36,6 @@ const HomeScreen = () => {
       setLoading(true);
 
       try {
-        // SEARCH
         if (debouncedSearch.trim()) {
           const res = await fetch(
             `https://www.omdbapi.com/?apikey=${
@@ -50,10 +55,7 @@ const HomeScreen = () => {
           } else {
             setMovies((prev) => [...prev, ...(data.Search || [])]);
           }
-        }
-
-        // HOME PAGE RECOMMENDATIONS
-        else {
+        } else {
           const moviePromises = recommendations.map((movie) =>
             fetch(
               `https://www.omdbapi.com/?apikey=${
@@ -87,11 +89,19 @@ const HomeScreen = () => {
         setSearch={setSearch}
       />
 
-      <Trending
+      <Featured
         movies={movies}
         loading={loading}
         search={debouncedSearch}
       />
+
+      {/* Show Recently Viewed only on Home */}
+      {!debouncedSearch && (
+        <RecentlyViewed
+          movies={recentlyViewedMovies}
+          loading={false}
+        />
+      )}
 
       {!loading && debouncedSearch && movies.length > 0 && (
         <button
