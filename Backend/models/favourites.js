@@ -8,8 +8,9 @@ const favouriteSchema = new mongoose.Schema({
     poster: String,
     year: String,
     genre: String,
-    rating: String
+    rating: String,
 })
+  
 
 
 favouriteSchema.index({ userID: 1, omdbID: 1 }, { unique: true });

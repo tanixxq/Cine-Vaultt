@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import favouriteRoutes from "./routes/FavouritesRoutes.js";
 import cors from "cors";
-import recentlyViewedRoutes from "./routes/RecentlyViewed.js";
+import recentlyViewed from "./routes/RecentlyViewed.js";
+import RegisterRoutes from "./routes/RegisterRoutes.js";
 
 dotenv.config();
 
@@ -14,7 +15,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/favourites", favouriteRoutes);
-app.use("/api/recently-viewed", recentlyViewedRoutes);
+app.use("/api/recently-viewed", recentlyViewed);
+app.use("/api/register", RegisterRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to Cine-Vaultt API");
