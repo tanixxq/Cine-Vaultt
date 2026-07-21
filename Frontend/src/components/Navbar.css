@@ -45,3 +45,15 @@
     font-weight: bold;
     color: white !important;
   }
+
+  /* Login button */
+.login-btn-nav {
+  background: #e50914;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  color: white !important;
+}
+.login-btn-nav:hover {
+  background: #b20710;
+}
