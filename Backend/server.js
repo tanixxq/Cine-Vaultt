@@ -4,7 +4,7 @@ import connectDB from "./config/db.js";
 import favouriteRoutes from "./routes/FavouritesRoutes.js";
 import cors from "cors";
 import recentlyViewed from "./routes/RecentlyViewed.js";
-import RegisterRoutes from "./routes/RegisterRoutes.js";
+import RegisterRoutes from "./routes/authRoutes.js";
 
 
 dotenv.config();
