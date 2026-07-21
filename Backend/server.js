@@ -6,6 +6,7 @@ import cors from "cors";
 import recentlyViewed from "./routes/RecentlyViewed.js";
 import RegisterRoutes from "./routes/RegisterRoutes.js";
 
+
 dotenv.config();
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use("/api/favourites", favouriteRoutes);
 app.use("/api/recently-viewed", recentlyViewed);
 app.use("/api/register", RegisterRoutes);
+app.use("/api/login", RegisterRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to Cine-Vaultt API");
