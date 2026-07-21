@@ -1,4 +1,4 @@
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+const API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 
 export const fetchTrendingMovies = async () => {
   const res = await fetch(

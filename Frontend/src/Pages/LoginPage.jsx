@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./loginPage.css";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/authContext";
 
 const LoginPages = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+
+  const { login } = useContext(AuthContext);
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -22,19 +26,28 @@ const LoginPages = () => {
         }),
       });
 
+
       const data = await response.json();
 
+
       if (response.ok) {
-        localStorage.setItem("token", data.token);
+
+        login(data.token);
+
         setMessage("Login successful ✅");
-        console.log("Token:", data.token);
+
       } else {
+
         setMessage(data.message);
+
       }
 
+
     } catch (error) {
+
       console.log(error);
       setMessage("Something went wrong");
+
     }
   };
 
@@ -46,12 +59,14 @@ const LoginPages = () => {
 
         <h1>Login</h1>
 
+
         <form 
           className="login-form" 
           onSubmit={handleLogin}
         >
 
           <div>
+
             <label>Email</label>
 
             <input
@@ -65,7 +80,9 @@ const LoginPages = () => {
           </div>
 
 
+
           <div>
+
             <label>Password</label>
 
             <input
@@ -79,6 +96,7 @@ const LoginPages = () => {
           </div>
 
 
+
           <button 
             type="submit"
             className="login-button"
@@ -90,11 +108,13 @@ const LoginPages = () => {
         </form>
 
 
+
         {message && (
           <p className="login-message">
             {message}
           </p>
         )}
+
 
 
         <p className="register-link">
