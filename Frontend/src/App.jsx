@@ -5,16 +5,23 @@ import MovieDetails from "./Pages/MovieDetails";
 import WatchList from "./Pages/WatchList";
 import LoginPage from "./Pages/LoginPage";
 import RegisterPage from "./Pages/RegisterPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
     <>
       <Navbar />
-
       <Routes>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/movie/:id" element={<MovieDetails />} />
-        <Route path="/watchlist" element={<WatchList />} />
+        <Route
+          path="/watchlist"
+          element={
+            <ProtectedRoute>
+              <WatchList />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
       </Routes>
