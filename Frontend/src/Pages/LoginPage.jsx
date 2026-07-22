@@ -1,12 +1,14 @@
 import React, { useState, useContext } from "react";
 import "./loginPage.css";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/authContext";
 
 const LoginPages = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const { login } = useContext(AuthContext);
 
@@ -33,6 +35,7 @@ const LoginPages = () => {
       if (response.ok) {
 
         login(data.token);
+        navigate("/");
 
         setMessage("Login successful ✅");
 
