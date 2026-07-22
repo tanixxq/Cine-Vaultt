@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
 
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -10,24 +11,31 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const getCurrentUser = async () => {
       if (!token) {
+        setUser(null);
         setLoading(false);
         return;
       }
 
+      setLoading(true);
+
       try {
-        const response = await fetch("https://cine-vaultt-2.onrender.com/api/auth/me", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          "https://cine-vaultt-2.onrender.com/api/auth/me",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const data = await response.json();
 
         if (response.ok) {
-          console.log("USER FROM /me:", data);
           setUser(data);
         } else {
-          logout();
+          localStorage.removeItem("token");
+          setToken(null);
+          setUser(null);
         }
       } catch (error) {
         console.log(error);
@@ -51,7 +59,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, loading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        login,
+        logout,
+        loading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

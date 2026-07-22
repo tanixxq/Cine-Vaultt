@@ -5,6 +5,7 @@ import "./Navbar.css";
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
+  console.log("Navbar user:", user);
   const navigate = useNavigate();
 
   const handleLogout = () => {

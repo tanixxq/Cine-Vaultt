@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/authContext"; // Adjust the path if needed
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
@@ -7,49 +8,54 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
+  
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
+
   const handleRegister = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://cine-vaultt-2.onrender.com/api/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-        }),
-      });
+      const response = await fetch(
+        "https://cine-vaultt-2.onrender.com/api/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username,
+            email,
+            password,
+          }),
+        }
+      );
 
       const data = await response.json();
 
       if (response.ok) {
         setMessage("Registration successful ✅");
-        console.log("Token:", data.token);
 
-        localStorage.setItem("token", data.token);
+        // Login the user immediately
+        await login(data.token);
+
+        // Navigate to home
+        navigate("/");
       } else {
         setMessage(data.message);
       }
-
     } catch (error) {
       console.log(error);
       setMessage("Something went wrong");
     }
   };
 
-
   return (
     <div className="login-container">
-
       <div className="login-card">
-
         <h1>Create Account</h1>
 
         <form className="login-form" onSubmit={handleRegister}>
-
           <div>
             <label>Username</label>
             <input
@@ -60,7 +66,6 @@ const RegisterPage = () => {
               required
             />
           </div>
-
 
           <div>
             <label>Email</label>
@@ -73,7 +78,6 @@ const RegisterPage = () => {
             />
           </div>
 
-
           <div>
             <label>Password</label>
             <input
@@ -85,25 +89,13 @@ const RegisterPage = () => {
             />
           </div>
 
-
-          <button 
-            type="submit"
-            className="login-button"
-          >
+          <button type="submit" className="login-button">
             Register
           </button>
-
         </form>
 
-
-        {message && (
-          <p className="login-message">
-            {message}
-          </p>
-        )}
-
+        {message && <p className="login-message">{message}</p>}
       </div>
-
     </div>
   );
 };
