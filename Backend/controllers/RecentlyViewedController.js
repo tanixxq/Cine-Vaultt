@@ -1,4 +1,4 @@
-import RecentlyViewed from "../models/recentlyViewed.js";
+import RecentlyViewed from "../models/RecentlyViewed.js";
 
 // Add or Update Recently Viewed
 export const addRecentlyViewed = async (req, res) => {
