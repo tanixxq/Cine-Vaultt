@@ -1,81 +1,65 @@
 import RecentlyViewed from "../models/RecentlyViewed.js";
 
-// Add or Update Recently Viewed
-export const addRecentlyViewed = async (req, res) => {
-  try {
-    const {
-      omdbID,
-      title,
-      poster,
-      year,
-      genre,
-      rating,
-      userID,
-    } = req.body;
+export const addRecentlyViewed=async(req,res)=>{
+  try{
+    const {omdbID,title,poster,year,genre,rating}=req.body;
+    const userID=req.user.id;
 
-    const existingEntry = await RecentlyViewed.findOne({
-      userID,
-      omdbID,
-    });
+    const existingEntry=await RecentlyViewed.findOne({userID,omdbID});
 
-    if (existingEntry) {
-      existingEntry.viewedAt = new Date();
+    if(existingEntry){
+      existingEntry.viewedAt=new Date();
       await existingEntry.save();
 
-      return res.status(200).json({
-        message: "Recently viewed updated successfully",
-      });
+      return res.json({message:"Recently viewed updated"});
     }
 
-    const newEntry = new RecentlyViewed({
+    await RecentlyViewed.create({
       userID,
       omdbID,
       title,
       poster,
       year,
       genre,
-      rating,
+      rating
     });
 
-    await newEntry.save();
+    const allMovies=await RecentlyViewed.find({userID})
+      .sort({viewedAt:-1});
 
-    const allMovies = await RecentlyViewed.find({ userID })
-      .sort({ viewedAt: -1 });
-
-    if (allMovies.length > 10) {
-      const moviesToDelete = allMovies.slice(10);
-
-      const ids = moviesToDelete.map(movie => movie._id);
-
+    if(allMovies.length>10){
       await RecentlyViewed.deleteMany({
-        _id: { $in: ids },
+        _id:{
+          $in:allMovies.slice(10).map(movie=>movie._id)
+        }
       });
     }
 
-    return res.status(201).json({
-      message: "Recently viewed added successfully",
+    res.status(201).json({
+      message:"Recently viewed added"
     });
 
-  } catch (error) {
-    return res.status(500).json({
-      error: "Failed to add recently viewed movie",
+  }catch(error){
+    res.status(500).json({
+      error:error.message
     });
   }
 };
 
-export const getRecentlyViewed = async (req, res) => {
-  try {
-    const { userID } = req.params;
 
-    const recentlyViewed = await RecentlyViewed.find({ userID })
-      .sort({ viewedAt: -1 })
-      .limit(10);
+export const getRecentlyViewed=async(req,res)=>{
+  try{
+    const recentlyViewed=await RecentlyViewed.find({
+      userID:req.user.id
+    })
+    .sort({viewedAt:-1})
+    .limit(10);
 
-    return res.status(200).json(recentlyViewed);
+    res.json(recentlyViewed);
 
-  } catch (error) {
-    return res.status(500).json({
-      error: "Failed to fetch recently viewed movies",
+  }catch(error){
+    res.status(500).json({
+      error:error.message
     });
   }
 };

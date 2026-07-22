@@ -1,13 +1,11 @@
 import express from "express";
-import {
-  addRecentlyViewed,
-  getRecentlyViewed,
-} from "../controllers/RecentlyViewedController.js";
+import {addRecentlyViewed,getRecentlyViewed} from "../controllers/RecentlyViewedController.js";
+import {authMiddleware} from "../middleware/authMiddleware.js";
 
-const router = express.Router();
+const router=express.Router();
 
-router.post("/", addRecentlyViewed);
+router.post("/",authMiddleware,addRecentlyViewed);
 
-router.get("/:userID", getRecentlyViewed);
+router.get("/",authMiddleware,getRecentlyViewed);
 
 export default router;
