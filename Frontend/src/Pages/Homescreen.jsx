@@ -1,152 +1,118 @@
-import React, { useState, useEffect } from "react";
+import React,{useState,useEffect,useContext} from "react";
 import Hero from "../components/Hero";
 import SearchBar from "../components/SearchBar";
 import Featured from "../components/Featured";
 import RecentlyViewed from "../components/RecentlyViewed";
 import recommendations from "../data/recommendations";
+import {AuthContext} from "../context/authContext";
 
-const HomeScreen = () => {
+const HomeScreen=()=>{
 
-  const [search, setSearch] = useState("");
-  const [debouncedSearch, setDebouncedSearch] = useState("");
-  const [movies, setMovies] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [recentMovies, setRecentMovies] = useState([]);
+  const {user,token}=useContext(AuthContext);
 
+  const [search,setSearch]=useState("");
+  const [debouncedSearch,setDebouncedSearch]=useState("");
+  const [movies,setMovies]=useState([]);
+  const [page,setPage]=useState(1);
+  const [loading,setLoading]=useState(false);
+  const [recentMovies,setRecentMovies]=useState([]);
 
-  const recentlyViewedMovies = !debouncedSearch
-    ? movies.slice(0, 5)
-    : [];
-
-
-  // Debounce Search
-  useEffect(() => {
-    const timer = setTimeout(() => {
+  useEffect(()=>{
+    const timer=setTimeout(()=>{
       setDebouncedSearch(search);
-    }, 500);
+    },500);
 
-    return () => clearTimeout(timer);
+    return()=>clearTimeout(timer);
+  },[search]);
 
-  }, [search]);
-
-
-  useEffect(() => {
+  useEffect(()=>{
     setPage(1);
-  }, [debouncedSearch]);
+  },[debouncedSearch]);
 
 
-  useEffect(() => {
+  useEffect(()=>{
 
-    const fetchRecentlyViewed = async () => {
+    const fetchRecentlyViewed=async()=>{
 
-      try {
+      if(!user)return;
 
-        const response = await fetch(
-          "http://localhost:3000/api/recently-viewed/user123"
+      try{
+        const response=await fetch(
+          "https://cine-vaultt-2.onrender.com/api/recently-viewed",
+          {
+            headers:{
+              Authorization:`Bearer ${token}`
+            }
+          }
         );
 
-        const data = await response.json();
-
+        const data=await response.json();
         setRecentMovies(data);
 
-      } catch(error) {
+      }catch(error){
         console.log(error);
       }
-
     };
-
 
     fetchRecentlyViewed();
 
-  }, []);
+  },[user,token]);
 
 
+  useEffect(()=>{
 
-  useEffect(() => {
-
-    async function fetchMovies() {
+    async function fetchMovies(){
 
       setLoading(true);
 
-      try {
+      try{
 
-        if (debouncedSearch.trim()) {
+        if(debouncedSearch.trim()){
 
-          const res = await fetch(
-            `https://www.omdbapi.com/?apikey=${
-              import.meta.env.VITE_OMDB_API_KEY
-            }&s=${debouncedSearch}&page=${page}`
+          const res=await fetch(
+            `https://www.omdbapi.com/?apikey=${import.meta.env.VITE_OMDB_API_KEY}&s=${debouncedSearch}&page=${page}`
           );
 
+          const data=await res.json();
 
-          const data = await res.json();
-
-
-          if (data.Response === "False") {
-
+          if(data.Response==="False"){
             setMovies([]);
-
             return;
           }
 
+          if(page===1)
+            setMovies(data.Search||[]);
+          else
+            setMovies(prev=>[...prev,...(data.Search||[])]);
 
-          if(page === 1) {
+        }else{
 
-            setMovies(data.Search || []);
-
-          } else {
-
-            setMovies((prev) => [
-              ...prev,
-              ...(data.Search || [])
-            ]);
-
-          }
-
-
-        } else {
-
-
-          const moviePromises = recommendations.map((movie) =>
+          const moviePromises=recommendations.map(movie=>
             fetch(
-              `https://www.omdbapi.com/?apikey=${
-                import.meta.env.VITE_OMDB_API_KEY
-              }&i=${movie.imdbID}`
-            ).then((res) => res.json())
+              `https://www.omdbapi.com/?apikey=${import.meta.env.VITE_OMDB_API_KEY}&i=${movie.imdbID}`
+            ).then(res=>res.json())
           );
 
-
-          const data = await Promise.all(moviePromises);
-
-          setMovies(data);
-
+          setMovies(await Promise.all(moviePromises));
         }
 
-
-      } catch(error) {
-
+      }catch(error){
         console.log(error);
-
-      } finally {
-
+      }finally{
         setLoading(false);
-
       }
 
     }
 
-
     fetchMovies();
 
+  },[debouncedSearch,page]);
 
-  }, [debouncedSearch, page]);
 
-  return (
+  return(
     <div>
 
-      <Hero />
-
+      <Hero/>
 
       <SearchBar
         search={search}
@@ -159,27 +125,24 @@ const HomeScreen = () => {
         search={debouncedSearch}
       />
 
-      {!debouncedSearch && (
+      {!debouncedSearch&&(
         <RecentlyViewed
           movies={recentMovies}
           loading={false}
+          user={user}
         />
       )}
 
-
-      {!loading && debouncedSearch && movies.length > 0 && (
-
+      {!loading&&debouncedSearch&&movies.length>0&&(
         <button
-          onClick={() => setPage((prev) => prev + 1)}
+          onClick={()=>setPage(prev=>prev+1)}
           className="see-more-btn"
         >
           See More
         </button>
-
       )}
 
     </div>
-
   );
 };
 
