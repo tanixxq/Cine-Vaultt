@@ -17,8 +17,7 @@ app.use(express.json());
 
 app.use("/api/favourites", favouriteRoutes);
 app.use("/api/recently-viewed", recentlyViewed);
-app.use("/api/register", RegisterRoutes);
-app.use("/api/login", RegisterRoutes);
+app.use("/api/auth", RegisterRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to Cine-Vaultt API");
