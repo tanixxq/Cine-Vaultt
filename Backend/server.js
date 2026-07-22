@@ -12,10 +12,17 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors({
-  origin: "https://cine-vaultt-35mb-alpha.vercel.app",
-  credentials: true
-}));
+
+
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://cine-vaultt-35mb-alpha.vercel.app",
+    ],
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use("/api/favourites", favouriteRoutes);
