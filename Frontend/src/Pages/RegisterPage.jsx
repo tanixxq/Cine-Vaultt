@@ -11,7 +11,7 @@ const RegisterPage = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("https://cine-vaultt-1.onrender.com/api/login/", {
+      const response = await fetch("https://cine-vaultt-2.onrender.com/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
