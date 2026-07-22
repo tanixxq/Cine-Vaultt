@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
       }
 
       try {
-        const response = await fetch("http://localhost:3000/api/login/me", {
+        const response = await fetch("https://cine-vaultt-1.onrender.com/api/login/me", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
