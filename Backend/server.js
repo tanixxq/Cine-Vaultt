@@ -19,6 +19,10 @@ app.use("/api/favourites", favouriteRoutes);
 app.use("/api/recently-viewed", recentlyViewed);
 app.use("/api/auth", RegisterRoutes);
 
+
+app.get("/test", (req,res)=>{
+  res.json({message:"Backend updated"});
+});
 app.get("/", (req, res) => {
   res.send("Welcome to Cine-Vaultt API");
 });
