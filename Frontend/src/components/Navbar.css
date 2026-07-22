@@ -39,7 +39,6 @@
   
   /* Watchlist button */
   .watchlist-btn-nav {
-    background: #e50914;
     padding: 8px 14px;
     border-radius: 8px;
     font-weight: bold;
@@ -47,13 +46,16 @@
   }
 
   /* Login button */
-.login-btn-nav {
-  background: #e50914;
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-weight: bold;
-  color: white !important;
-}
+  .login-btn-nav {
+    background: #e50914;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: bold;
+    color: white !important;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+  }
 .login-btn-nav:hover {
   background: #b20710;
 }
